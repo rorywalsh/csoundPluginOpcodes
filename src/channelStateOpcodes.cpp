@@ -10,15 +10,25 @@
 #include <plugin.h>
 #include <string>
 #include <modload.h>
+#include <iomanip> 
 #include <fstream>
+#include <iostream>
 #include "json.hpp"
+#include <algorithm>
 
-#define STRING 19
-#define CONTROL 17
-
+void replaceAll(std::string &s, const std::string &search, const std::string &replace) {
+	for (size_t pos = 0; ; pos += replace.length()) {
+		// Locate the substring to replace
+		pos = s.find(search, pos);
+		if (pos == std::string::npos) break;
+		// Replace by erasing and inserting
+		s.erase(pos, search.length());
+		s.insert(pos, replace);
+	}
+}
 
 using json = nlohmann::json;
-struct channelPresetSave : csnd::Plugin<1, 1>
+struct channelStateSave : csnd::Plugin<1, 1>
 {
     int init()
     {
@@ -52,15 +62,23 @@ struct channelPresetSave : csnd::Plugin<1, 1>
                 {
                     chString = ((STRINGDAT*)value)->data;
                     csound->message (std::string ("String channel: " + std::string (csoundChanList[i].name)) + " - " + std::string (chString));
-                    j[csoundChanList[i].name] = std::string (chString);
+					std::string s(chString);
+					replaceAll(s, "\\\\", "/");
+					j[csoundChanList[i].name] = std::string (s);
                 }
             }
-
-
-
-
         }
 
+		std::string filename(inargs.str_data(0).data);
+		std::ofstream file;
+		file.open(filename);
+		if (file.is_open() == false)
+			outargs[0] = 0;
+		else 
+			outargs[0] = 1;
+
+		file << std::setw(4) << j << std::endl;
+		file.close();
         csound->message(j.dump());
         return OK;
     }
@@ -68,12 +86,25 @@ struct channelPresetSave : csnd::Plugin<1, 1>
 };
 
 
-struct channelPresetOpen : csnd::Plugin<1, 1>
+struct channelStateRecall : csnd::Plugin<1, 1>
 {
     int init()
     {
+		json j;
+		std::string filename(inargs.str_data(0).data);
+		std::ifstream file(filename);
+		if (file.fail())
+		{
+			csound->message("Unable to open file");
+			outargs[0] = 0;
+			return OK;
+		}
 
 
+		j << file;
+		csound->message(j.dump());
+		outargs[0] = 1;
+		
         return OK;
     }
 
@@ -83,7 +114,6 @@ struct channelPresetOpen : csnd::Plugin<1, 1>
 
 void csnd::on_load (Csound* csound)
 {
-    csnd::plugin<channelPresetSave> (csound, "channelStateSave.i", "i", "S", csnd::thread::i);
-    csnd::plugin<channelPresetOpen> (csound, "channelStateRecall.i", "i", "S", csnd::thread::i);
-
+    csnd::plugin<channelStateSave> (csound, "channelStateSave.i", "i", "S", csnd::thread::i);
+    csnd::plugin<channelStateRecall> (csound, "channelStateRecall.i", "i", "S", csnd::thread::i);
 }
