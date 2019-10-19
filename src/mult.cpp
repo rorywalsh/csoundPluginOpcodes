@@ -22,24 +22,29 @@
 
 #include <plugin.h>
 
-struct Mult : csnd::Plugin<1, 2> {
-  
-  int init() {
-    outargs[0] = inargs[0]*inargs[1];
-    return OK;
-  }
+struct Mult : csnd::Plugin<1, 2>
+{
 
-  int kperf() {
-    outargs[0] = inargs[0]*inargs[1];
-    return OK;
-  }
-  
-  int aperf() {
-    for(int i=offset; i < nsmps; i++)
-      outargs(0)[i] = inargs(0)[i] * inargs(1)[i];	 
-    return OK;
-  }
-  
+    int init()
+    {
+        outargs[0] = inargs[0] * inargs[1];
+        return OK;
+    }
+
+    int kperf()
+    {
+        outargs[0] = inargs[0] * inargs[1];
+        return OK;
+    }
+
+    int aperf()
+    {
+        for (int i = offset; i < nsmps; i++)
+            outargs (0)[i] = inargs (0)[i] * inargs (1)[i];
+
+        return OK;
+    }
+
 };
 
 #include <modload.h>
@@ -48,13 +53,14 @@ struct Mult : csnd::Plugin<1, 2> {
    a, k, and i inputs. For these cases, it is
    recommended to append an identifier extension .
    to the name for debugging purposes (not strictly required).
-   For the user, the extension is not used and all 
+   For the user, the extension is not used and all
    overloads are called "mult"
-*/   
-void csnd::on_load(Csound *csound) {
-  csnd::plugin<Mult>(csound, "mult.aa", "a", "aa", csnd::thread::a);
-  csnd::plugin<Mult>(csound, "mult.kk", "k", "kk", csnd::thread::k);
-  csnd::plugin<Mult>(csound, "mult.ii", "i", "ii", csnd::thread::i);
-  csnd::plugin<Mult>(csound, "mult.aa", "a", "aa", csnd::thread::a);
+*/
+void csnd::on_load (Csound* csound)
+{
+    csnd::plugin<Mult> (csound, "mult.aa", "a", "aa", csnd::thread::a);
+    csnd::plugin<Mult> (csound, "mult.kk", "k", "kk", csnd::thread::k);
+    csnd::plugin<Mult> (csound, "mult.ii", "i", "ii", csnd::thread::i);
+    csnd::plugin<Mult> (csound, "mult.aa", "a", "aa", csnd::thread::a);
 }
 

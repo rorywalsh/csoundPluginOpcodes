@@ -12,41 +12,39 @@
 #include <modload.h>
 #include <fstream>
 
-//==========================================================
-//removes a number of occurrences of one string from another
-//==========================================================
-struct FileToStr : csnd::Plugin<1, 1> 
-{  
-  int init() 
-  {
-    std::string line;
-    std::string lines;
-    char* fileName = inargs.str_data(0).data;
-    char* inString = inargs.str_data(1).data;
-    std::ifstream fileStream(fileName);
 
-    if (fileStream.is_open())
-    {
-        while ( getline (fileStream,line) )
-        {
-            lines.append(line);
-            lines.append("\n");
-        }
-    }
-    else
-    {
-        csound->message("*** filetostr could not open file for reading ****");
-        return NOTOK;
-    }
-
-    fileStream.close();
-    outargs.str_data(0).data = csound->strdup((char*)lines.c_str());
-    return OK;
-  }
-};
-  
-void csnd::on_load(Csound *csound) 
+struct FileToStr : csnd::Plugin<1, 1>
 {
-  csnd::plugin<FileToStr>(csound, "filetostr.ii", "S", "S", csnd::thread::i);
+    int init()
+    {
+        std::string line;
+        std::string lines;
+        char* fileName = inargs.str_data (0).data;
+        char* inString = inargs.str_data (1).data;
+        std::ifstream fileStream (fileName);
+
+        if (fileStream.is_open())
+        {
+            while ( getline (fileStream, line) )
+            {
+                lines.append (line);
+                lines.append ("\n");
+            }
+        }
+        else
+        {
+            csound->message ("*** filetostr could not open file for reading ****");
+            return NOTOK;
+        }
+
+        fileStream.close();
+        outargs.str_data (0).data = csound->strdup ((char*)lines.c_str());
+        return OK;
+    }
+};
+
+void csnd::on_load (Csound* csound)
+{
+    csnd::plugin<FileToStr> (csound, "filetostr.ii", "S", "S", csnd::thread::i);
 }
 

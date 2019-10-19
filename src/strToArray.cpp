@@ -15,50 +15,51 @@
 //==========================================================
 //opcode version of the StrToArr UDO written by Joachim Heintz
 //==========================================================
-struct StrToArray : csnd::Plugin<1, 2> {
-  
-  int init() 
-  {
-    return parseStringAndFillStruct(this);
-  }
+struct StrToArray : csnd::Plugin<1, 2>
+{
 
-  int parseStringAndFillStruct(Plugin* opcodeData)
-  {
-    csnd::Vector<STRINGDAT> &out = opcodeData->outargs.vector_data<STRINGDAT>(0);
-    
-    char* inString = opcodeData->inargs.str_data(0).data;
-    char* inStringDeLimiter = opcodeData->inargs.str_data(1).data;
-    
-
-    std::string input(inString);
-    std::string delimiter(inStringDeLimiter);
-    std::vector<std::string> tokens;
-
-    size_t pos = 0;
-
-    while ((pos = input.find(delimiter)) != std::string::npos) 
+    int init()
     {
-        tokens.push_back(input.substr(0, pos));
-        input.erase(0, pos + delimiter.length());
+        return parseStringAndFillStruct (this);
     }
 
-    if(input.size()>0)
-      tokens.push_back(input);
-
-    out.init(csound, (int)tokens.size());
-    
-    for ( int i = 0 ; i < tokens.size() ; i++)
+    int parseStringAndFillStruct (Plugin* opcodeData)
     {
-      out[i].data = csound->strdup((char*)tokens[i].c_str());
-    }
+        csnd::Vector<STRINGDAT>& out = opcodeData->outargs.vector_data<STRINGDAT> (0);
 
-    tokens.clear();
-    return OK;
-  }
+        char* inString = opcodeData->inargs.str_data (0).data;
+        char* inStringDeLimiter = opcodeData->inargs.str_data (1).data;
+
+
+        std::string input (inString);
+        std::string delimiter (inStringDeLimiter);
+        std::vector<std::string> tokens;
+
+        size_t pos = 0;
+
+        while ((pos = input.find (delimiter)) != std::string::npos)
+        {
+            tokens.push_back (input.substr (0, pos));
+            input.erase (0, pos + delimiter.length());
+        }
+
+        if (input.size() > 0)
+            tokens.push_back (input);
+
+        out.init (csound, (int)tokens.size());
+
+        for ( int i = 0 ; i < tokens.size() ; i++)
+        {
+            out[i].data = csound->strdup ((char*)tokens[i].c_str());
+        }
+
+        tokens.clear();
+        return OK;
+    }
 };
 
-void csnd::on_load(Csound *csound) 
+void csnd::on_load (Csound* csound)
 {
-  csnd::plugin<StrToArray>(csound, "strtoarray.ii", "S[]", "SS", csnd::thread::i);
+    csnd::plugin<StrToArray> (csound, "strtoarray.ii", "S[]", "SS", csnd::thread::i);
 }
 
