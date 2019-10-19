@@ -14,6 +14,6 @@ mkdir build
 cd build
 cmake -G "Visual Studio 15 2017 Win64" ..
 msbuild.exe Project.sln /property:Platform=x64 /property:Configuration=Release
-
-Copy-Item "D:/a/1/s/build/Release/*" -Destination D:/a/1/a/
+mkdir D:/a/1/a/Win64
+Copy-Item "D:/a/1/s/build/Release/*" -Destination D:/a/1/a/Win64
 
