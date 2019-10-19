@@ -57,15 +57,11 @@ struct channelStateSave : csnd::Plugin<1, 1>
             if (csound->get_csound()->GetChannelPtr (csound->get_csound(), &value, csoundChanList[i].name,
                     CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
             {
-
-                if (value != NULL)
-                {
-                    chString = ((STRINGDAT*)value)->data;
-                    csound->message (std::string ("String channel: " + std::string (csoundChanList[i].name)) + " - " + std::string (chString));
-					std::string s(chString);
-					replaceAll(s, "\\\\", "/");
-					j[csoundChanList[i].name] = std::string (s);
-                }
+                chString = ((STRINGDAT*)value)->data;
+                csound->message (std::string ("String channel: " + std::string (csoundChanList[i].name)) + " - " + std::string (chString));
+				std::string s(chString);
+				replaceAll(s, "\\\\", "/");
+				j[csoundChanList[i].name] = std::string (s);
             }
         }
 
@@ -101,10 +97,35 @@ struct channelStateRecall : csnd::Plugin<1, 1>
 		}
 
 
-		j << file;
-		csound->message(j.dump());
+		j << file;		
+		MYFLT* value;
+
+		for (json::iterator it = j.begin(); it != j.end(); ++it) 
+		{
+			std::string channelName = it.key();
+			if (it.value().is_number_float())
+			{
+				if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, channelName.c_str(),
+					CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+				{
+					//csound->message(std::string("Control channel: " + std::string(csoundChanList[i].name)) + " - " + std::to_string(*value));
+					*value = it.value();
+				}
+			}
+			else if (it.value().is_string())
+			{
+				if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, channelName.c_str(),
+					CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+				{
+					std::string string = it.value();
+					((STRINGDAT*)value)->data = csound->strdup((char*)string.c_str());
+					//csound->message(std::string("String channel: " + std::string(channelName.c_str())) + " - " + std::string(chString));
+				}
+			}
+		}
 		outargs[0] = 1;
-		
+		file.close();
+		csound->message(j.dump());
         return OK;
     }
 
