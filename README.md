@@ -1,26 +1,11 @@
-Plugin Opcode SDK
-================
+## Various Csound plugin opcodes
 
-This SDK was designed to help third-party plugin opcode development
-either in C or C++. Its only dependency is a Csound installation.
+Binaries are available [here](https://dev.azure.com/rorywalsh/csoundPluginOpcodes)
 
-Contents
---------------
+Just go to Pipelines->Builds, click the latest build and then click the Artifacts link on the top right to download. To use the opcodes, add the plugin to to your CsOptions sections. For example:
 
-1. CMake scripts: a CMakeLists.txt containing the basic elements to
-build an opcode. This in turns depends on the FindCsound module,
-which is also provided to discover a Csound installation. The
-CMake script builds the opcode examples provided in the SDK.
-
-2. C opcodes example: a trivial example showing how to
-begin writing opcodes in C. For further information on this,
-check the Csound Reference or the Csound FLOSS Manual
-(http://write.flossmanuals.net/csound/extending-csound/)
-
-3. C++ opcodes example: a C++ version of the same trivial
-example, using the Csound Plugin Opcode Framework.
-For further information, check the paper describing this
-at http://www.mdpi.com/2076-3417/7/10/970
-
-4. A CSD example for these opcodes.
-
+```
+<CsOptions>
+-n -d -+rtmidi=NULL -M0 --midi-key-cps=4 --midi-velocity-amp=5 --opcode-lib=channelStateOpcodes.dll
+</CsOptions>
+```
