@@ -11,9 +11,33 @@ echo "BUILD_ARTIFACTSTAGINGDIRECTORY is $BUILD_ARTIFACTSTAGINGDIRECTORY"
 echo "BUILD_ARTIFACTSTAGINGDIRECTORY contents:"
 ls -1 $BUILD_ARTIFACTSTAGINGDIRECTORY
 
-sudo apt-get build-dep csound
-sudo apt-get update --fix-missing
-sudo apt-get update -qq
+sudo apt-get install libsndfile1-dev
+sudo apt-get install libasound2-dev
+sudo apt-get install libjack-dev
+sudo apt-get install portaudio19-dev
+sudo apt-get install libportmidi-dev
+sudo apt-get install libpulse-dev
+sudo apt-get install swig
+sudo apt-get install liblua5.1-0-dev
+sudo apt-get install python-dev
+sudo apt-get install puredata-dev
+sudo apt-get install default-jdk
+sudo apt-get install libfltk1.1-dev
+sudo apt-get install libfluidsynth-dev
+sudo apt-get install liblo-dev
+sudo apt-get install fluid
+sudo apt-get install ladspa-sdk
+sudo apt-get install libpng-dev
+sudo apt-get install dssi-dev
+sudo apt-get install libstk0-dev
+sudo apt-get install libgmm++-dev
+sudo apt-get install bison
+sudo apt-get install flex
+sudo apt-get install libportsmf-dev
+sudo apt-get install libeigen3-dev
+sudo apt-get install libcunit1-dev
+sudo apt-get install python-tk
+
 # # sudo apt-get install libsndfile1
 git clone https://github.com/csound/csound.git
 cd csound
