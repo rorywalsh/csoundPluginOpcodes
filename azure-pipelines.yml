@@ -49,7 +49,7 @@ jobs:
 - job: Linux
   pool:
     vmImage: 'ubuntu-16.04'
-steps:
+  steps:
   - bash: chmod 777 buildLinux.sh
   - bash: ./buildLinux.sh
     env:
