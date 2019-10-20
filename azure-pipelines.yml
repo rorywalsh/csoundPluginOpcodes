@@ -46,7 +46,6 @@ jobs:
       pathtoPublish: '$(Build.ArtifactStagingDirectory)'
 
 
-jobs:
 - job: Linux
   pool:
     vmImage: 'ubuntu-16.04'
