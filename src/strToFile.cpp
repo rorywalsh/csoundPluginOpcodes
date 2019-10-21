@@ -17,18 +17,12 @@
 //==========================================================
 //removes a number of occurrences of one string from another
 //==========================================================
-struct StrToFile : csnd::Plugin<0, 3>
+struct StrToFile : csnd::Plugin<1, 3>
 {
     int init()
     {
-        // DIR *dir = opendir(".");
-        // if (dir) {
-        //   struct dirent *ent;
-        //   while ((ent = readdir(dir)) != NULL) {
-        //     csound->message(ent->d_dir);
-        //   }
-        // }
-
+       
+        int mode = 0;
         if (in_count() < 2)
         {
             csound->message ("You did not pass have enough arguments to strtofile\n");
@@ -37,7 +31,9 @@ struct StrToFile : csnd::Plugin<0, 3>
 
         char* fileName = inargs.str_data (0).data;
         char* inString = inargs.str_data (1).data;
-        int mode = inargs[2];
+
+        if(in_count()>1)
+            mode = inargs[2];
 
         std::ofstream fileStream;
 
@@ -52,18 +48,18 @@ struct StrToFile : csnd::Plugin<0, 3>
 
         if (!fileStream.is_open())
         {
-            csound->message ("*** strtofile could not open file for writing ***");
-            return NOTOK;
+            csound->message ("*** strToFile could not open file for writing ***");
+            outargs[0] = 0;
         }
 
         fileStream.close();
-
+        outargs[0] = 1;
         return OK;
     }
 };
 
 void csnd::on_load (Csound* csound)
 {
-    csnd::plugin<StrToFile> (csound, "strtofile.ii", "", "SSi", csnd::thread::i);
+    csnd::plugin<StrToFile> (csound, "strToFile.ii", "", "SSi", csnd::thread::i);
 }
 

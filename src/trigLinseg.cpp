@@ -10,6 +10,8 @@
 #include <plugin.h>
 #include <vector>
 #include <numeric>
+#include <modload.h>
+
 
 // linseg type opcode with trigger mechanism
 struct TrigLinseg : csnd::Plugin<1, 64>
@@ -94,18 +96,10 @@ struct TrigLinseg : csnd::Plugin<1, 64>
     std::vector<MYFLT> durations;
 };
 
-#include <modload.h>
 
-/* The mult opcode is overloaded for
-   a, k, and i inputs. For these cases, it is
-   recommended to append an identifier extension .
-   to the name for debugging purposes (not strictly required).
-   For the user, the extension is not used and all
-   overloads are called "mult"
-*/
 void csnd::on_load (Csound* csound)
 {
-    csnd::plugin<TrigLinseg> (csound, "triglinseg.aa", "a", "km", csnd::thread::ia);
-    csnd::plugin<TrigLinseg> (csound, "triglinseg.kk", "k", "km", csnd::thread::ik);
+    csnd::plugin<TrigLinseg> (csound, "trigLinseg.aa", "a", "km", csnd::thread::ia);
+    csnd::plugin<TrigLinseg> (csound, "trigLinseg.kk", "k", "km", csnd::thread::ik);
 }
 

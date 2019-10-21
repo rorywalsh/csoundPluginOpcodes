@@ -6,7 +6,7 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
   02110-1301 USA
 */
-
+#include <modload.h>
 #include <plugin.h>
 #include <vector>
 
@@ -98,18 +98,10 @@ struct TrigExpseg : csnd::Plugin<1, 64>
     std::vector<MYFLT> durations;
 };
 
-#include <modload.h>
 
-/* The mult opcode is overloaded for
-   a, k, and i inputs. For these cases, it is
-   recommended to append an identifier extension .
-   to the name for debugging purposes (not strictly required).
-   For the user, the extension is not used and all
-   overloads are called "mult"
-*/
 void csnd::on_load (Csound* csound)
 {
-    csnd::plugin<TrigExpseg> (csound, "trigexpseg.aa", "a", "km", csnd::thread::ia);
-    csnd::plugin<TrigExpseg> (csound, "trigexpseg.kk", "k", "km", csnd::thread::ik);
+    csnd::plugin<TrigExpseg> (csound, "trigExpseg.aa", "a", "km", csnd::thread::ia);
+    csnd::plugin<TrigExpseg> (csound, "trigExpseg.kk", "k", "km", csnd::thread::ik);
 }
 

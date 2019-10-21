@@ -60,6 +60,6 @@ struct StrToArray : csnd::Plugin<1, 2>
 
 void csnd::on_load (Csound* csound)
 {
-    csnd::plugin<StrToArray> (csound, "strtoarray.ii", "S[]", "SS", csnd::thread::i);
+    csnd::plugin<StrToArray> (csound, "strToArray.ii", "S[]", "SS", csnd::thread::i);
 }
 

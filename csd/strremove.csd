@@ -1,16 +1,15 @@
 <CsoundSynthesizer>
 <CsOptions>
--n --opcode-lib=../build/libstrremove.dylib
+-n --opcode-lib=../build/libstrRemove.dylib
 </CsOptions>
 <CsInstruments>
 0dbfs=1
 
 instr 1
 iCnt = 0
-SString = "Hello there my name is"
-SOutput strremove SString, "Hello"
+SString = "Hello there, my name is Rory"
+SOutput strRemove SString, "Hello there, "
 prints SOutput
-prints "\n"
 endin
 
 </CsInstruments>

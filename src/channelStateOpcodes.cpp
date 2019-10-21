@@ -16,6 +16,9 @@
 #include "json.hpp"
 #include <algorithm>
 
+using json = nlohmann::json;
+
+//https://stackoverflow.com/questions/4643512/replace-substring-with-another-substring-c
 void replaceAll(std::string &s, const std::string &search, const std::string &replace) {
 	for (size_t pos = 0; ; pos += replace.length()) {
 		// Locate the substring to replace
@@ -27,7 +30,6 @@ void replaceAll(std::string &s, const std::string &search, const std::string &re
 	}
 }
 
-using json = nlohmann::json;
 struct channelStateSave : csnd::Plugin<1, 1>
 {
     int init()
@@ -50,7 +52,7 @@ struct channelStateSave : csnd::Plugin<1, 1>
             if (csound->get_csound()->GetChannelPtr (csound->get_csound(), &value, csoundChanList[i].name,
                     CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
             {
-                csound->message (std::string ("Control channel: " + std::string (csoundChanList[i].name)) + " - " + std::to_string (*value));
+//                csound->message (std::string ("Control channel: " + std::string (csoundChanList[i].name)) + " - " + std::to_string (*value));
                 j[csoundChanList[i].name] = *value;
             }
 
@@ -58,7 +60,7 @@ struct channelStateSave : csnd::Plugin<1, 1>
                     CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
             {
                 chString = ((STRINGDAT*)value)->data;
-                csound->message (std::string ("String channel: " + std::string (csoundChanList[i].name)) + " - " + std::string (chString));
+//                csound->message (std::string ("String channel: " + std::string (csoundChanList[i].name)) + " - " + std::string (chString));
 				std::string s(chString);
 				replaceAll(s, "\\\\", "/");
 				j[csoundChanList[i].name] = std::string (s);
@@ -108,7 +110,6 @@ struct channelStateRecall : csnd::Plugin<1, 1>
 				if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, channelName.c_str(),
 					CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
 				{
-					//csound->message(std::string("Control channel: " + std::string(csoundChanList[i].name)) + " - " + std::to_string(*value));
 					*value = it.value();
 				}
 			}
@@ -119,7 +120,6 @@ struct channelStateRecall : csnd::Plugin<1, 1>
 				{
 					std::string string = it.value();
 					((STRINGDAT*)value)->data = csound->strdup((char*)string.c_str());
-					//csound->message(std::string("String channel: " + std::string(channelName.c_str())) + " - " + std::string(chString));
 				}
 			}
 		}
