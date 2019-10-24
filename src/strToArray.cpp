@@ -20,15 +20,15 @@ struct StrToArray : csnd::Plugin<1, 2>
 
     int init()
     {
-        return parseStringAndFillStruct (this);
+        return parseStringAndFillStruct ();
     }
 
-    int parseStringAndFillStruct (Plugin* opcodeData)
+    int parseStringAndFillStruct ()
     {
-        csnd::Vector<STRINGDAT>& out = opcodeData->outargs.vector_data<STRINGDAT> (0);
+        csnd::Vector<STRINGDAT>& out = outargs.vector_data<STRINGDAT> (0);
 
-        char* inString = opcodeData->inargs.str_data (0).data;
-        char* inStringDeLimiter = opcodeData->inargs.str_data (1).data;
+        char* inString = inargs.str_data (0).data;
+        char* inStringDeLimiter = inargs.str_data (1).data;
 
 
         std::string input (inString);

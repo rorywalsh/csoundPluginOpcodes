@@ -32,101 +32,143 @@ void replaceAll(std::string &s, const std::string &search, const std::string &re
 
 struct channelStateSave : csnd::Plugin<1, 1>
 {
-    int init()
-    {
-        json j;
+	int init()
+	{
 
-        controlChannelInfo_s* csoundChanList;
-        int numberOfChannels = csound->get_csound()->ListChannels (csound->get_csound(), &csoundChanList);
+		return OK;
+	}
+	
+	int kperf()
+	{
+		writeDataToDisk();
+		return OK;
+	}
 
-        for (int i = 0; i < numberOfChannels; i++ )
-        {
-            const float min = csoundChanList[i].hints.min;
-            const float max = (csoundChanList[i].hints.max ==  0 ? 1 : csoundChanList[i].hints.max);
-            const float defaultValue = csoundChanList[i].hints.dflt;
-            std::string name;
+	void writeDataToDisk()
+	{
+		json j;
 
-            MYFLT* value;
-            char* chString;
+		controlChannelInfo_s* csoundChanList;
+		int numberOfChannels = csound->get_csound()->ListChannels(csound->get_csound(), &csoundChanList);
 
-            if (csound->get_csound()->GetChannelPtr (csound->get_csound(), &value, csoundChanList[i].name,
-                    CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
-            {
-//                csound->message (std::string ("Control channel: " + std::string (csoundChanList[i].name)) + " - " + std::to_string (*value));
-                j[csoundChanList[i].name] = *value;
-            }
+		for (int i = 0; i < numberOfChannels; i++)
+		{
+			const float min = csoundChanList[i].hints.min;
+			const float max = (csoundChanList[i].hints.max == 0 ? 1 : csoundChanList[i].hints.max);
+			const float defaultValue = csoundChanList[i].hints.dflt;
+			std::string name;
 
-            if (csound->get_csound()->GetChannelPtr (csound->get_csound(), &value, csoundChanList[i].name,
-                    CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
-            {
-                chString = ((STRINGDAT*)value)->data;
-//                csound->message (std::string ("String channel: " + std::string (csoundChanList[i].name)) + " - " + std::string (chString));
+			MYFLT* value;
+			char* chString;
+
+			if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, csoundChanList[i].name,
+				CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+			{
+				j[csoundChanList[i].name] = *value;
+			}
+
+			if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, csoundChanList[i].name,
+				CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+			{
+				chString = ((STRINGDAT*)value)->data;
 				std::string s(chString);
 				replaceAll(s, "\\\\", "/");
-				j[csoundChanList[i].name] = std::string (s);
-            }
-        }
+				j[csoundChanList[i].name] = std::string(s);
+			}
+		}
 
 		std::string filename(inargs.str_data(0).data);
+		replaceAll(filename, "\\\\", "/");
 		std::ofstream file;
 		file.open(filename);
 		if (file.is_open() == false)
 			outargs[0] = 0;
-		else 
+		else
 			outargs[0] = 1;
 
 		file << std::setw(4) << j << std::endl;
 		file.close();
-        csound->message(j.dump());
-        return OK;
-    }
+		csound->message(j.dump());
+	}
 
 };
 
 
-struct channelStateRecall : csnd::Plugin<1, 1>
+struct channelStateRecall : csnd::Plugin<1, 2>
 {
-    int init()
-    {
+	int init()
+	{
+		readDataFromDisk();
+		return OK;
+	}
+
+	int kperf()
+	{
+		readDataFromDisk();
+		return OK;
+	}
+
+	void readDataFromDisk()
+	{
 		json j;
 		std::string filename(inargs.str_data(0).data);
+		std::vector<std::string> ignoreStrings;
+
+		if(inargs[1] != 0)
+		{
+			csnd::Vector<STRINGDAT>& in = inargs.vector_data<STRINGDAT>(1);
+			for (int i = 0; i < in.len(); i++)
+			{
+				ignoreStrings.push_back(std::string(in[i].data));
+			}			
+		}
+
 		std::ifstream file(filename);
 		if (file.fail())
 		{
 			csound->message("Unable to open file");
 			outargs[0] = 0;
-			return OK;
+			return;
 		}
-
 
 		j << file;		
 		MYFLT* value;
 
 		for (json::iterator it = j.begin(); it != j.end(); ++it) 
 		{
+			bool ignore = false;
 			std::string channelName = it.key();
-			if (it.value().is_number_float())
+
+			for (int i = 0; i < ignoreStrings.size(); i++)
 			{
-				if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, channelName.c_str(),
-					CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
-				{
-					*value = it.value();
-				}
+				if (channelName == ignoreStrings[i])
+					ignore = true;
 			}
-			else if (it.value().is_string())
+
+			if (ignore == false)
 			{
-				if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, channelName.c_str(),
-					CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+				if (it.value().is_number_float())
 				{
-					std::string string = it.value();
-					((STRINGDAT*)value)->data = csound->strdup((char*)string.c_str());
+					if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, channelName.c_str(),
+						CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+					{
+						*value = it.value();
+					}
+				}
+				else if (it.value().is_string())
+				{
+					if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, channelName.c_str(),
+						CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+					{
+						std::string string = it.value();
+						((STRINGDAT*)value)->data = csound->strdup((char*)string.c_str());
+					}
 				}
 			}
 		}
 		outargs[0] = 1;
 		file.close();
 		csound->message(j.dump());
-        return OK;
     }
 
 };
@@ -136,5 +178,8 @@ struct channelStateRecall : csnd::Plugin<1, 1>
 void csnd::on_load (Csound* csound)
 {
     csnd::plugin<channelStateSave> (csound, "channelStateSave.i", "i", "S", csnd::thread::i);
+	csnd::plugin<channelStateSave>(csound, "channelStateSave.k", "k", "S", csnd::thread::k);
     csnd::plugin<channelStateRecall> (csound, "channelStateRecall.i", "i", "S", csnd::thread::i);
+	csnd::plugin<channelStateRecall> (csound, "channelStateRecall.k", "k", "SO", csnd::thread::k);
+	csnd::plugin<channelStateRecall>(csound, "channelStateRecall.k", "k", "SS[]", csnd::thread::k);
 }
