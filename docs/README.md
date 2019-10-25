@@ -6,7 +6,7 @@ If you wish to try them out you with your installed version of Csound you can do
 
 <br>
 
-<a href="../html-link.htm"><img src="imgs/Linux.png" style="width:20%;" hspace="30"/></a><a href="../html-link.htm"><img src="imgs/Windows.png" style="width:20%;" hspace="30"/></a><a href="../html-link.htm"><img src="imgs/Apple.png" style="width:20%;" hspace="30"/></a>
+<a href="https://github.com/rorywalsh/csoundPluginOpcodes/releases/download/1.0/Linux.zip"><img src="imgs/Linux.png" style="width:20%;" hspace="30"/></a><a href="https://github.com/rorywalsh/csoundPluginOpcodes/releases/download/1.0/Win64.zip><img src="imgs/Windows.png" style="width:20%;" hspace="30"/></a><a href="https://github.com/rorywalsh/csoundPluginOpcodes/releases/download/1.0/MacOS.zip"><img src="imgs/Apple.png" style="width:20%;" hspace="30"/></a>
 
 <br>
 
