@@ -1,7 +1,6 @@
 <p style="font-size:30px;color:hsl(204, 90%, 45%)"><b>trigLinseg</b></p>
 
 ----
-
 Trace a series of line segments between specified points.
 
 ### Description

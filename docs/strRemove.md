@@ -1,7 +1,6 @@
 <p style="font-size:30px;color:hsl(204, 90%, 45%)"><b>strRemove</b></p>
 
 ----
-
 Removes all occurrences of a string from another. 
 
 ### Description

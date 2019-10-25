@@ -1,7 +1,6 @@
 <p style="font-size:30px;color:hsl(204, 90%, 45%)"><b>strToArray</b></p>
 
 ----
-
 Converts a string to a string array.
 
 ### Description

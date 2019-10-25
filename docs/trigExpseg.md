@@ -1,7 +1,6 @@
 <p style="font-size:30px;color:hsl(204, 90%, 45%)"><b>trigExpseg</b></p>
 
 ----
-
 Trace a series of exponential segments between specified points.
 
 ### Description

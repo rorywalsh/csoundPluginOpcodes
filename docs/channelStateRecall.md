@@ -1,7 +1,6 @@
 <p style="font-size:30px;color:hsl(204, 90%, 45%)"><b>channelStateRecall</b></p>
 
 ----
-
 Saves all channel data to file 
 
 ### Description
