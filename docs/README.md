@@ -1,8 +1,8 @@
 <p style="font-size:50px;text-align: center;color:hsl(204, 90%, 45%)"><b>Csound plugin opcodes</b></p>
 
-This repoistory is a collection of various different opcodes that are bundled with [Cabbage](http://cabbageaudio.com). 
+This repository hosts a collection of, relatively untested, opcodes for the Csound audio framework. 
 
-If you wish to try them out you with vanilla Csound you can do so by downloading the current release. 
+If you wish to try them out you with your installed version of Csound you can do so by downloading the current release for your platforms through the link below.  
 
 <br>
 
@@ -11,7 +11,7 @@ If you wish to try them out you with vanilla Csound you can do so by downloading
 <br>
 
 
-To use any of the plugin opcodes you will need to tell Csound where they are located. You can do this in the `CsOptions` section of your Csound file. For example:
+To use any of the plugin opcodes you will should place them into your pluin64 directory. Alternatively, you can tell Csound where they are located. To do this, you can add a `--plugin-lib` flag to your `CsOptions`. For example:
 
 ```csound
 <CsOptions>
@@ -21,4 +21,4 @@ To use any of the plugin opcodes you will need to tell Csound where they are loc
 
 ## Contributing
 
-This repository has a CI build that is triggered to compile opcodes on Linux, MacOS and Windows. If you have some opcodes that you would like to contribute to this collection, fork the repo, write your opcode and make a pull request. All of the plugin here use the [Csound Opcode-SDK](https://github.com/csound/opcode_sdk).  
+This repository has a [CI build](https://dev.azure.com/rorywalsh/csoundPluginOpcodes/_build?definitionId=7) that is triggered to compile all the opcodes on Linux, MacOS and Windows. If you have some opcodes that you would like to contribute to this collection, even if it just to avail of the automated build system, fork the repo, write your opcode and make a pull request. All of the plugin here use the [Csound Opcode-SDK](https://github.com/csound/opcode_sdk). Note that camelCase is used to name each plugin. This is done to help differentiate them from internal Csound plugins.  

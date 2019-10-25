@@ -15,8 +15,8 @@ kres trigExpseg kTrig, ia, idur1, ib [, idur2] [, ic] [...]
 
 ### Initialization
 
-* kTrig -- trigger signal. When kTrig is greater or equal to one, it will trigger the breakpoint envelope.
-* ia -- starting value. Zero is illegal for exponentials.
+* kTrig -- trigger signal. When kTrig is greater or equal to one, it will trigger the breakpoint envelope. If you trigger the envelop before it has finished, it will result in clicks. 
+* ia -- starting value. Zero is illegal for exponentials. 
 * ib, ic, etc. -- value after dur1 seconds, etc. For exponentials, must be non-zero and must agree in sign with ia.
 * idur1 -- duration in seconds of first segment. A zero or negative value will cause all initialization to be skipped.
 * idur2, idur3, etc. -- duration in seconds of subsequent segments. A zero or negative value will terminate the initialization process with the preceding point, permitting the last-defined line or curve to be continued indefinitely in performance. The default is zero.

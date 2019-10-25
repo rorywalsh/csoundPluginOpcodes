@@ -1,19 +1,20 @@
 <CsoundSynthesizer>
 <CsOptions>
--odac --opcode-lib=../build/Debug/strRemove.dll
+-odac --opcode-lib=../build/Debug/fileToStr.dll
 </CsOptions>
 <CsInstruments>
 0dbfs=1
 
 instr 1
 iCnt = 0
-SString = "Hello there, my name is Rory"
-SOutput strRemove SString, "Hello there, "
+SString = "strRemove.csd"
+SOutput fileToStr SString
 prints SOutput
+prints "\n"
 endin
 
 </CsInstruments>
 <CsScore>
-i1 0 1
+i1 0 z
 </CsScore>
 </CsoundSynthesizer>

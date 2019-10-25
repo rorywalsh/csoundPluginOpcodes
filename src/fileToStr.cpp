@@ -20,7 +20,6 @@ struct FileToStr : csnd::Plugin<1, 1>
         std::string line;
         std::string lines;
         char* fileName = inargs.str_data (0).data;
-        char* inString = inargs.str_data (1).data;
         std::ifstream fileStream (fileName);
 
         if (fileStream.is_open())
@@ -33,7 +32,7 @@ struct FileToStr : csnd::Plugin<1, 1>
         }
         else
         {
-            csound->message ("*** filetostr could not open file for reading ****");
+            csound->message ("fileToStr could not open file for reading");
             return NOTOK;
         }
 
@@ -45,6 +44,6 @@ struct FileToStr : csnd::Plugin<1, 1>
 
 void csnd::on_load (Csound* csound)
 {
-    csnd::plugin<FileToStr> (csound, "filetostr.ii", "S", "S", csnd::thread::i);
+    csnd::plugin<FileToStr> (csound, "fileToStr.i", "S", "S", csnd::thread::i);
 }
 

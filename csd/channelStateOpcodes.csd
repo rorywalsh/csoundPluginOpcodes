@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Presets") size(370, 280), colour(58, 110, 182), pluginid("MPre")
+form caption("Presets") size(370, 280), colour(58, 110, 182), pluginid("fsad")
 keyboard bounds(10, 90, 345, 95)
 rslider bounds(12, 8, 85, 79), channel("att"), range(0, 1, 0.01), text("Att.")
 rslider bounds(98, 8, 85, 79), channel("dec"), range(0, 1, 0.4), text("Dec.")
@@ -20,7 +20,14 @@ nchnls = 2
 0dbfs = 1
 
 gkFileNumber init 10
+
 instr 1
+   kEnv madsr chnget:i("att"), chnget:i("dec"), chnget:i("sus"), chnget:i("rel")
+   aOut vco2 kEnv*p5, p4
+   outs aOut, aOut
+endin
+
+instr 10
    SFilename chnget "recallCombo"
    if changed2:k(SFilename) == 1 then
       SIgnoreChannels[] init 2
@@ -43,6 +50,6 @@ endin
 </CsInstruments>
 <CsScore>
 ;causes Csound to run for about 7000 years...
-i1 0 z
+i10 0 z
 </CsScore>
 </CsoundSynthesizer>

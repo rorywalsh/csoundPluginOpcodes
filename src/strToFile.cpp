@@ -29,10 +29,11 @@ struct StrToFile : csnd::Plugin<1, 3>
             return NOTOK;
         }
 
-        char* fileName = inargs.str_data (0).data;
-        char* inString = inargs.str_data (1).data;
+		char* inString = inargs.str_data(0).data;
+		char* fileName = inargs.str_data(1).data;
+        
 
-        if(in_count()>1)
+        if(in_count()>2)
             mode = inargs[2];
 
         std::ofstream fileStream;
@@ -60,6 +61,6 @@ struct StrToFile : csnd::Plugin<1, 3>
 
 void csnd::on_load (Csound* csound)
 {
-    csnd::plugin<StrToFile> (csound, "strToFile.ii", "", "SSi", csnd::thread::i);
+    csnd::plugin<StrToFile> (csound, "strToFile.SSO", "i", "SSO", csnd::thread::i);
 }
 

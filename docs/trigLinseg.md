@@ -14,7 +14,7 @@ kres trigLinseg ia, idur1, ib [, idur2] [, ic] [...]
 ```
 
 ### Initialization
-* kTrig -- -- trigger signal. When kTrig is greater or equal to one, it will trigger the breakpoint envelope.
+* kTrig -- -- trigger signal. When kTrig is greater or equal to one, it will trigger the breakpoint envelope. If you trigger the envelop before it has finished, it will result in clicks. 
 * ia -- starting value.
 * ib, ic, etc. -- value after dur1 seconds, etc.
 * idur1 -- duration in seconds of first segment. A zero or negative value will cause all initialization to be skipped.
@@ -39,11 +39,10 @@ Here is an example of the trigLinseg opcode.
 0dbfs=1
 
 instr 1
-    kTrig init 1
+    kTrig metro .5
     aEnv triglinseg kTrig, 0, 1, 1, 1, 0
     a1 oscili aEnv, 400
     outs a1, a1
-    kTrig = 0
 endin
 
 </CsInstruments>

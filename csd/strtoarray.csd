@@ -8,7 +8,7 @@
 instr 1
 iCnt = 0
 SString = "Hello there my name is"
-SArray[] strtoarray SString, " "
+SArray[] strToArray SString, " "
 while iCnt<lenarray(SArray) do
     prints SArray[iCnt]
     iCnt+=1
