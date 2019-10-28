@@ -6,5 +6,6 @@
   * [strRemove](strRemove.md)
   * [strToArray](strToArray.md)
   * [strToFile](strToFile.md)
+  * [fileToStr](fileToStr.md)
   * [trigExpseg](trigExpseg.md)
   * [trigLinseg](trigLinseg.md)
