@@ -34,7 +34,7 @@ struct channelStateSave : csnd::Plugin<1, 1>
 {
 	int init()
 	{
-
+		writeDataToDisk();
 		return OK;
 	}
 	
