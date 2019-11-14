@@ -8,8 +8,8 @@ Trace a series of line segments between specified points. Unlike the `linseg` op
 
 ### Syntax
 ```csound
-ares trigLinseg ia, idur1, ib [, idur2] [, ic] [...]
-kres trigLinseg ia, idur1, ib [, idur2] [, ic] [...]
+ares trigLinseg kTrig, ia, idur1, ib [, idur2] [, ic] [...]
+kres trigLinseg kTrig, ia, idur1, ib [, idur2] [, ic] [...]
 ```
 
 ### Initialization
