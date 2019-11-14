@@ -39,7 +39,7 @@ Here is an example of the trigLinseg opcode.
 
 instr 1
     kTrig metro .5
-    aEnv triglinseg kTrig, 0, 1, 1, 1, 0
+    aEnv trigLinseg kTrig, 0, 1, 1, 1, 0
     a1 oscili aEnv, 400
     outs a1, a1
 endin
