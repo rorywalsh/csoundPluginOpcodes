@@ -14,7 +14,7 @@ iRes strToFile SInput, SFilename, iMode
 ### Initialization
 
 * **iRes** -- 1 for success, 0 for fail
-* **SInput** -- the input string minus all occurrences of the search string
+* **SInput** -- the input string 
 * **SFilename** -- filename, if no path is given it will write file to current directory
 * **iMode** -- 0 for overwrite (default), 1 for append  
 
@@ -30,7 +30,7 @@ This example shows strToFile writing the a string to a file called string.txt
 <CsoundSynthesizer>
 <CsOptions>
 ; Select audio/midi flags here according to platform
--odac --opcode-lib=../build/libstrToArray.so 
+-odac --opcode-lib=../build/libstrToFile.so 
 ;-iadc    ;;;uncomment -iadc if RT audio input is needed too
 ; For Non-realtime ouput leave only the line below:
 ; -o diskin.wav -W ;;; for file output any platform
